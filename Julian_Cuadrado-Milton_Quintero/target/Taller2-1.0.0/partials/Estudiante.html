@@ -1,0 +1,126 @@
+
+
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Estudiante</div>
+    <div class="panel-body">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-click="nuevo()">Nuevo Estudiante</button>
+        </div>
+        <table class="resultados table table-striped">
+            <tr>
+                <th>
+                    Nombres
+                </th>
+                <th>
+                    Apellidos
+                </th>
+                <th>
+                    Codigo
+                </th>
+                <th>
+                    Documento
+                </th>
+                <th>
+                    Fecha nacimiento
+                </th>
+                <th>
+                    Carrera
+                </th>
+                <th>
+                    Municipio
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista track by $index">
+                <td>{{row.nombres}}</td>
+                <td>{{row.apellidos}}</td>
+                <td>{{row.codigo}}</td>
+                <td>{{row.documento}}</td>
+                <td>{{row.fechaNacimiento}}</td>
+                <td>{{row.carrera.nombre}}</td>
+                <td>{{row.municipio.nombre}}</td>
+                <td class="row">
+                    <button type="button" class="btn btn-default" ng-click="editar(row)">
+                        <span class="glyphicon glyphicon-pencil"></span>Editar
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="eliminar(row)">
+                        <span class="glyphicon glyphicon-remove"></span>Eliminar
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Estudiante</div>
+    <div class="panel-body">
+
+        <div class="form-group col-md-3" ng-class="errores.nombre ? 'error' : ''">
+            <label for="nombre">Nombres</label>
+            <input id="nombre" 
+                   class="form-control" 
+                   type="text"
+                   ng-model="datosFormulario.nombres"
+                   placeholder="nombres"/>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+        </div> 
+        <div class="form-group col-md-3" ng-class="errores.nombre ? 'error' : ''">
+            <label for="apellidos">Apellidos</label>
+            <input id="apellidos" 
+                   class="form-control" 
+                   type="text"
+                   ng-model="datosFormulario.apellidos"
+                   placeholder="apellidos"/>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+        </div> 
+        <div class="form-group col-md-3" ng-class="errores.nombre ? 'error' : ''">
+            <label for="codigo">Codigo</label>
+            <input id="codigo" 
+                   class="form-control" 
+                   type="text"
+                   ng-model="datosFormulario.codigo"
+                   placeholder="codigo"/>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+        </div> 
+        <div class="form-group col-md-3" ng-class="errores.nombre ? 'error' : ''">
+            <label for="documento">Documento</label>
+            <input id="documento" 
+                   class="form-control" 
+                   type="text"
+                   ng-model="datosFormulario.documento"
+                   placeholder="documento"/>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+        </div> 
+        <div class="form-group col-md-3" ng-class="errores.nombre ? 'error' : ''">
+            <label for="fechaNacimiento">Fecha nacimiento</label>
+            <input id="fechaNacimiento" 
+                   class="form-control" 
+                   type="date"
+                   ng-model="datosFormulario.fechaNacimiento"/>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+        </div> 
+        <div class="form-group col-md-3" ng-class="errores.nombre ? 'error' : ''">
+            <label for="carrera">Carrera</label>
+            <select id="carrera" class="form-control" 
+                    ng-model="datosFormulario.carrera"
+                    ng-options="option.nombre for option in listaCarrera track by option.nombre">
+            </select>
+        </div> 
+        <div class="form-group col-md-3" ng-class="errores.nombre ? 'error' : ''">
+            <label for="municipio">Municipio</label>
+            <select id="municipio" class="form-control" 
+                    ng-model="datosFormulario.municipio"
+                    ng-options="option.nombre for option in listaMunicipio track by option.nombre">
+            </select>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+        </div>    
+    </div>
+     <div class="btn-group">
+        <button type="button" class="btn btn-default center-block" ng-click="guardar()">Agregar Estudiante</button>
+    </div>   
+     <div class="btn-group">
+        <button type="button" class="btn btn-default center-block" ng-click="cancelar()">Cancelar</button>
+    </div>   
+</div>
+

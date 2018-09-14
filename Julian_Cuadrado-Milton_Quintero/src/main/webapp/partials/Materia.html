@@ -1,0 +1,188 @@
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Materia</div>
+    <div class="panel-body">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-click="nuevo()">Nueva Materia</button>
+        </div>
+        <table class="resultados table table-striped">
+            <tr>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Creditos
+                </th>
+                <th>
+                    Profesor 
+                </th>
+                <th>
+                    Carrera
+                </th>
+                <th>
+                    Horario
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista">
+                <td>{{row.nombre}}</td>
+                <td>{{row.creditos}}</td>
+                <td>{{row.profesor.nombres}}</td>
+                <td>{{row.carrera.nombre}}</td>
+                <td><button class="btn btn-primary" data-toggle="modal" data-target="#miModal" ng-click="mostrarHorario(row)">Ver Horario</button></td>
+                <td class="row">
+                    <button type="button" class="btn btn-default" ng-click="editar(row)">
+                        <span class="glyphicon glyphicon-pencil"></span>Editar
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="eliminar(row)">
+                        <span class="glyphicon glyphicon-remove"></span>Eliminar
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Materia</div>
+    <div class="panel-body">
+        
+        <div class="form-group col-md-2" ng-class="errores.nombre ? 'error' : ''">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" 
+                   class="form-control" 
+                   type="text"
+                   ng-model="datosFormulario.nombre"
+                   placeholder="nombre"/>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+        </div> 
+        <div class="form-group col-md-2" ng-class="errores.nombre ? 'error' : ''">
+            <label for="credito">Creditos</label>
+            <input id="credito" 
+                   class="form-control" 
+                   type="number"
+                   ng-model="datosFormulario.creditos"
+                   placeholder="creditos"/>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+        </div> 
+        
+        <div class="form-group col-md-3" ng-class="errores.nombre ? 'error' : ''">
+            <label for="profesor">Profesor</label>
+            <select id="profesor" class="form-control" 
+                    ng-model="datosFormulario.profesor"
+                    ng-options="option.nombres for option in listaProfesor track by option.nombres">
+            </select>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+        </div> 
+        
+        <div class="form-group col-md-3" ng-class="errores.nombre ? 'error' : ''">
+            <label for="carrera">Carrera</label>
+            <select id="carrera" class="form-control" 
+                    ng-model="datosFormulario.carrera"
+                    ng-options="option.nombre for option in listaCarrera track by option.nombre">
+            </select>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+        </div> 
+    </div>
+    
+    <div class="panel-body">
+        <h3>Agregar Horario </h3>
+        <div class="form-group col-md-2">
+            <label> Dia de la semana </label>
+            <select id="facultad" class="form-control" 
+                    ng-model="datosFormularioHorario.dia"
+                    ng-init="datosFormularioHorario.diasemana = { dia: listaDias[0]}"
+                    ng-options="option for option in listaDias track by option">
+            </select>                
+        </div>
+        <div class="form-group col-md-2">
+            <label>
+                Hora inicio
+            </label>
+            <input type="number" class="form-control" placeholder="HH" ng-model="datosFormularioHorario.horaInicio">
+        </div>
+        <div class="form-group col-md-2">
+            <label>Hora Fin</label>  
+            <input type="number" class="form-control " placeholder="HH" ng-model="datosFormularioHorario.horaFin">
+        </div>
+        <div class="form-group col-md-2">
+            <label></label>
+            <button class="form-control btn btn-primary" ng-click="agregarHorario()">Agregar Horario</button>
+        </div> 
+        <div class="form-group col-md-2">
+            <label></label>
+            <button class="form-control btn btn-primary" data-toggle="modal" data-target="#miModal">Ver Horario</button>
+        </div> 
+    </div>
+    
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" ng-click="guardar()">Agregar Materia</button>
+    </div>   
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+    </div>   
+</div>
+
+<!--modal para el horario-->
+<div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancelarHorario()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Horario</h4>
+            </div>
+            <div class="modal-body">
+                <table  class="horario table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Dia de la semana</th>
+                            <th>Hora de inicio</th>
+                            <th>Hora de Fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in li track by $index">
+                            <td>{{row.dia}}</td>
+                            <td>{{row.horaInicio}}</td>
+                            <td>{{row.horaFin}}</td>
+                            <td class="row">
+                                <button type="button" class="btn btn-default" ng-click="editarHorario(row)">
+                                    <span class="glyphicon glyphicon-pencil"></span>Editar
+                                </button>
+                                <button type="button" class="btn btn-default" ng-click="eliminarHorario(row)">
+                                    <span class="glyphicon glyphicon-remove"></span>Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="panel panel-primary" id="editH" ng-show="panelEditarHorario">
+                    <div class="form-group">
+                        <label> Dia de la semana </label>
+                        <select id="facultad" class="form-control" 
+                                ng-model="datosFormularioHorario.dia"
+                                ng-init="datosFormularioHorario.diasemana = { dia: listaDias[0]}"
+                                ng-options="option for option in listaDias track by option">
+                        </select>                
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Hora inicio
+                        </label>
+                        <input type="number" class="form-control" placeholder="HH" ng-model="datosFormularioHorario.horaInicio">
+                    </div>
+                    <div class="form-group ">
+                        <label>Hora Fin</label>  
+                        <input type="number" class="form-control " placeholder="HH" ng-model="datosFormularioHorario.horaFin">
+                    </div>
+                    <div class="form-group ">
+                        <label></label>
+                        <button class=" btn btn-primary" ng-click="agregarHorario()">Editar Horario</button>
+                        <button class=" btn btn-primary" ng-click="cancelarHorario()">Cancelar</button>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
